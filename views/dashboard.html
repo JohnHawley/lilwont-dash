@@ -146,7 +146,7 @@
 				console.log('Sending data');
 				data = $('#form').serializeObject();
 				$.ajax({
-					url: 'http://localhost:8080/endpoint', // url where to submit the request
+					url: '/endpoint', // url where to submit the request
 					type: "POST", // type of action POST || GET
 					//dataType : 'json', // data type
 					data: JSON.stringify(data), // post data || get data
