@@ -1,0 +1,27 @@
+.bar-window {
+	background: transparent;
+	position:absolute;
+	height:100%;
+	width:100%;
+}
+.bar-bar {
+	background: #fe330a;
+	position: absolute;
+	bottom:0;
+	width: 100%;
+	z-index: 99;
+}
+span.display {
+	text-align: center;
+	font-size: 65px;
+	line-height: 1.2em;
+	color: #fe330a;
+	width: 100%;
+	display:block;
+}
+span.display.orange {
+	color: #fe330a;
+}
+span.display.white {
+	color: #ffffff;
+}

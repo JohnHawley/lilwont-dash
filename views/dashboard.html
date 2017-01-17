@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<style>
+		#reset:focus,
+		#submit:focus {
+			outline: 0;
+		}
+
+		#loader img {
+			width: 17%;
+			position: fixed;
+			top: 50%;
+			margin-left: -8%;
+			margin-top: -10%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="loader" style="display:none;"><img src="/assets/loading_spinner.gif" /></div>
+
+	<div class="container">
+		<div class="row-fluid">
+			<h1>lilwont variables dashboard</h1>
+		</div>
+		<div class="row-fluid">
+			<form id="form" action="" method="post">
+				<fieldset>
+
+					<legend>Today</legend>
+					<div class="well">
+						<div class="row-fluid">
+							<div class="span6">
+								<label>Buy-ins</label>
+								<div class="input-prepend">
+									<span class="add-on">$</span>
+									<input type="number" step="any" name="dayIn">
+								</div>
+								<span class="help-block">
+											<div class="input-append">
+												<input class="input-small" type="number" step="any" name="addInNum" placeholder="Quick add">
+												<input id="addIn" class="btn" type="button" value="Add">
+											</div>
+										</span>
+							</div>
+							<div class="span6">
+								<label>Cash-outs</label>
+								<div class="input-prepend">
+									<span class="add-on">$</span>
+									<input type="number" step="any" name="dayOut">
+								</div>
+								<span class="help-block">
+											<div class="input-append">
+												<input class="input-small" type="number" step="any" name="addOutNum" placeholder="Quick add">
+												<input id="addOut" class="btn" type="button" value="Add">
+											</div>
+										</span>
+							</div>
+						</div>
+					</div>
+
+
+					<legend>Long-term</legend>
+					<div class="well">
+						<div class="row-fluid">
+							<div class="span6">
+								<label>My Bankroll</label>
+								<div class="input-prepend">
+									<span class="add-on">$</span>
+									<input type="number" step="any" name="bnkNow">
+								</div>
+								<span class="help-block">
+											<div class="input-append">
+												<input class="input-small" type="number" step="any" name="addBankNum" placeholder="Quick add">
+												<input id="addBank" class="btn" type="button" value="Add">
+											</div>
+										</span>
+							</div>
+							<div class="span6">
+								<label>Bankroll Goal</label>
+								<div class="input-prepend">
+									<span class="add-on">$</span>
+									<input type="number" step="any" name="bnkGoal">
+								</div>
+							</div>
+						</div>
+					</div>
+					<input id="reset" type="button" class="btn btn-large" name="reset" value="Refresh Values">
+					<input id="submit" type="button" class="btn btn-primary btn-large" name="submit" value="Submit">
+					<span id="success" style="display:none;font-weight:bold;color:green;">Success!</span>
+					<span id="failed" style="display:none;font-weight:bold;color:red;">Failed</span>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+
+			checkValues();
+
+
+			$("#addIn").on('click', function() {
+				var in1 = $("input[name='dayIn']").val();
+				var in2 = $("input[name='addInNum']").val();
+				$("input[name='dayIn']").val(Number(in1) + Number(in2));
+				$("input[name='addInNum']").val("");
+			});
+
+			$("#addOut").on('click', function() {
+				var in1 = $("input[name='dayOut']").val();
+				var in2 = $("input[name='addOutNum']").val();
+				$("input[name='dayOut']").val(Number(in1) + Number(in2));
+				$("input[name='addOutNum']").val("");
+			});
+			$("#addBank").on('click', function() {
+				var in1 = $("input[name='bnkNow']").val();
+				var in2 = $("input[name='addBankNum']").val();
+				$("input[name='bnkNow']").val(Number(in1) + Number(in2));
+				$("input[name='addBankNum']").val("");
+			});
+			$("#reset").on('click', function() {
+				checkValues();
+			});
+
+			$('input').keyup(
+				function enter(event) {
+					if (event.keyCode == 13) {
+						$("#submit").click();
+					}
+				});
+
+
+
+			// click on button submit
+			$("#submit").on('click', sendoff);
+
+
+			function sendoff() {
+				// send ajax
+				console.log('Sending data');
+				data = $('#form').serializeObject();
+				$.ajax({
+					url: 'http://localhost:8080/endpoint', // url where to submit the request
+					type: "POST", // type of action POST || GET
+					//dataType : 'json', // data type
+					data: JSON.stringify(data), // post data || get data
+					contentType: 'application/json',
+					beforeSend: function(result) {
+						$('#loader').show(2);
+					},
+					success: function(result) {
+						$('#success').show(5).delay(5000).hide(5);
+					},
+					complete: function(result) {
+						$('#loader').hide(2, function(ev) {
+							checkValues();
+						});
+					},
+					error: function(xhr, resp, text) {
+						console.log(xhr, resp, text);
+						console.log("It Fucked up.");
+						$('#failed').show(5).delay(5000).hide(5);
+					}
+				})
+			}
+
+			function checkValues() {
+				$.getJSON('/assets/data.json', function(data) {
+					$("input[name='dayIn']").val(data.lilwont.buy);
+					$("input[name='dayOut']").val(data.lilwont.cash);
+					$("input[name='bnkNow']").val(data.lilwont.bank);
+					$("input[name='bnkGoal']").val(data.lilwont.goal);
+				});
+			}
+
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if (o[this.name] !== undefined) {
+						if (!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+		});
+	</script>
+</body>
+
+</html>

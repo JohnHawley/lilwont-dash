@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="/assets/css/view.css" rel="stylesheet">
+	<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		$.fn.digits = function(){
+		    return this.each(function(){
+		        $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+		    })
+		}
+		$(document).ready(function(){
+			var socket = io();
+			socket.on('data',function(data){
+				$('.display').text("$"+data.lilwont.cash).digits();
+			});
+		});
+	</script>
+</head>
+<body style="font-family:'Oswald',sans-serif;background: #aaff00;">
+		<span class="display white"></span>
+</body>
+</html>

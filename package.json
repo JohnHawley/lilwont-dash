@@ -1,0 +1,19 @@
+{
+  "name": "lilwont-dash",
+  "version": "1.0.0",
+  "description": "LilWont Dashboard",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "http-proxy": "^1.16.2",
+    "socket.io": "^1.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "John Hawley",
+  "license": "ISC"
+}
