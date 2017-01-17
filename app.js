@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
-http.listen(8080, "127.0.0.1");
+http.listen(8080);
 
 var fs = require('fs');
 var path = require('path');
