@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
-http.listen(8080);
+http.listen(8000);
 
 var fs = require('fs');
 var path = require('path');
@@ -69,7 +69,7 @@ fs.watch(dataFile, function(event, filename) {
     }
 });
 
-app.listen(8080, function() {
+app.listen(80, function() {
     //server started
     console.log("\nService Started\nWelcome lilwont!\n\nDashboard is at:\nhttp://localhost:8080/dashboard\n\nCtrl+C to exit.");
 });
