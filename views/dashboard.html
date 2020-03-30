@@ -188,7 +188,7 @@
 			}
 
 			function checkValues() {
-				$.getJSON('/assets/data.json', function(data) {
+				$.getJSON('/data', function(data) {
 					$("input[name='dayIn']").val(data.lilwont.buy);
 					$("input[name='dayOut']").val(data.lilwont.cash);
 					$("input[name='bnkNow']").val(data.lilwont.bank);

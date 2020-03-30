@@ -2,11 +2,12 @@
   "name": "lilwont-dash",
   "version": "1.0.0",
   "description": "LilWont Dashboard",
-  "main": "server.js",
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "fs-extra": "^9.0.0",
     "http-proxy": "^1.16.2",
+    "path": "^0.12.7",
     "socket.io": "^1.7.2"
   },
   "devDependencies": {},
@@ -14,6 +15,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
+  "pkg": {
+    "assets": [
+      "assets/**/*",
+      "assets/data.json",
+      "views/*.html"
+    ]
+  },
+  "bin": "app.js",
   "author": "John Hawley",
   "license": "ISC"
 }
